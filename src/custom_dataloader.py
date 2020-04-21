@@ -22,13 +22,14 @@ def make_batches(folder_name, images_list):
     cnt = 0
     while(quo > 0):
         gtTexts = [None for i in range(max_images_per_batch)]
-        imgs = [preprocess(cv2.imread(folder_name + "/" + images_list[i+cnt], cv2.IMREAD_GRAYSCALE), img_size) for i in range(max_images_per_batch)]
+        imgs = [preprocess(cv2.imread(folder_name + "/" + images_list[i], cv2.IMREAD_GRAYSCALE), img_size) for i in range(cnt*max_images_per_batch,  (cnt+1)*max_images_per_batch)]
         batches_list.append(Batch(gtTexts, imgs))
-        cnt += max_images_per_batch
+        cnt += 1
+        quo -= 1
     
     if(quo == 0 and rem > 0):
         gtTexts = [None for i in range(rem)]
-        imgs = [preprocess(cv2.imread(folder_name + "/" + images_list[cnt + i], cv2.IMREAD_GRAYSCALE), img_size) for i in range(rem)]
+        imgs = [preprocess(cv2.imread(folder_name + "/" + images_list[i], cv2.IMREAD_GRAYSCALE), img_size) for i in range(cnt*max_images_per_batch, len(images_list))]
         batches_list.append(Batch(gtTexts, imgs))
     
     return batches_list
@@ -42,8 +43,8 @@ def infer(model, batch):
     return recognised
 
 def main():
-
-    # Define the DecorderType
+    
+     # Define the DecorderType
     decorder = DecoderType.BestPath
     # Define the folder in which images are present
     folder_name = sys.argv[1]
