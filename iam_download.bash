@@ -1,12 +1,12 @@
 #!/bin/bash
 function make_folder () {
-    mkdir NonSimpleHTR/data
-    mkdir NonSimpleHTR/data/words
+    mkdir CleanNonSimpleHTR/data
+    mkdir CleanNonSimpleHTR/data/words
 }
 
 function download_data () {
     local current_location=pwd
-    cd NonSimpleHTR/data/words
+    cd CleanNonSimpleHTR/data/words
     wget http://www.fki.inf.unibe.ch/DBs/iamDB/data/words/words.tgz --user jalotra --password shivam567
     tar -xvf words.tgz
     cd .. 
