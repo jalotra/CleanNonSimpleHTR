@@ -48,7 +48,14 @@ def preprocessor(img, imgSize, enhance=False, dataAugmentation=False):
     # transpose for TF
     img = cv2.transpose(target)
 
+    # normalize
+    (m, s) = cv2.meanStdDev(img)
+    m = m[0][0]
+    s = s[0][0]
+    img = img - m
+    img = img / s if s>0 else img
     return img
+
 
 
 def wer(r, h):
