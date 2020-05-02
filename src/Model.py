@@ -194,7 +194,7 @@ class Model:
                 tf.truncated_normal([2,2,512,512], stddev = 0.1)
             )
             conv = tf.nn.conv2d(
-                pool, kernel, padding = "VALID", strides = [1,1,1,1]
+                pool, kernel, padding = "SAME", strides = [1,1,1,1]
             )
             pool = tf.nn.max_pool(
                 conv, (1,1,2,1), (1,1,2,1), padding = "VALID"
