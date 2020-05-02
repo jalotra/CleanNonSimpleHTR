@@ -200,7 +200,7 @@ class Model:
                 conv, (1,1,2,1), (1,1,2,1), padding = "VALID"
             )
 
-            output = conv
+            output = pool
             print('LAYER 7 : ', pool.shape)
 
         # RETURN THE MAX POOLED LAYER  
