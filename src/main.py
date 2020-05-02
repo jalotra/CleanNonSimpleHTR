@@ -54,7 +54,7 @@ def train(model, loader):
 		# stop training if no more improvement in the last x epochs
 		if noImprovementSince >= earlyStopping:
 			print('No more improvement since %d epochs. Training stopped.' % earlyStopping)
-			charErrorRate = validate_on_test_samples()
+			charErrorRate = validate_on_test_samples(model, loader)
 			break
 
 
