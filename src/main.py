@@ -54,6 +54,7 @@ def train(model, loader):
 		# stop training if no more improvement in the last x epochs
 		if noImprovementSince >= earlyStopping:
 			print('No more improvement since %d epochs. Training stopped.' % earlyStopping)
+			charErrorRate = validate_on_test_samples()
 			break
 
 
@@ -85,6 +86,30 @@ def validate(model, loader):
 	wordAccuracy = numWordOK / numWordTotal
 	print('Character error rate: %f%%. Word accuracy: %f%%.' % (charErrorRate*100.0, wordAccuracy*100.0))
 	return charErrorRate
+
+def validate_on_test_samples(model, loader):
+	"Testing the NN"
+	print('Validate NN')
+	loader.testSet()
+	numCharErr = 0
+	numCharTotal = 0
+	numWordOK = 0
+	numWordTotal = 0
+	while loader.hasNext():
+		iterInfo = loader.getIteratorInfo()
+		print('Batch:', iterInfo[0],'/', iterInfo[1])
+		batch = loader.getNext()
+		recognized  = model.inferBatch(batch)
+		
+		print('Ground truth -> Recognized')	
+		for i in range(len(recognized)):
+			numWordOK += 1 if batch.gtTexts[i] == recognized[i] else 0
+			numWordTotal += 1
+			dist = editdistance.eval(recognized[i], batch.gtTexts[i])
+			numCharErr += dist
+			numCharTotal += len(batch.gtTexts[i])
+			print('[OK]' if dist==0 else '[ERR:%d]' % dist,'"' + batch.gtTexts[i] + '"', '->', '"' + recognized[i] + '"')
+	
 
 
 def infer(model, fnImg):

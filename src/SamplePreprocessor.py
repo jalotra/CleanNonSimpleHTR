@@ -5,6 +5,7 @@ from __future__ import print_function
 import random
 import numpy as np
 import cv2
+from DataAugmentation import distort
 
 
 def preprocessor(img, imgSize, enhance=False, dataAugmentation=False):
@@ -17,9 +18,10 @@ def preprocessor(img, imgSize, enhance=False, dataAugmentation=False):
 
     # increase dataset size by applying random stretches to the images
     if dataAugmentation:
-        stretch = (random.random() - 0.5)  # -0.5 .. +0.5
-        wStretched = max(int(img.shape[1] * (1 + stretch)), 1)  # random width, but at least 1
-        img = cv2.resize(img, (wStretched, img.shape[0]))  # stretch horizontally by factor 0.5 .. 1.5
+        # stretch = (random.random() - 0.5)  # -0.5 .. +0.5
+        # wStretched = max(int(img.shape[1] * (1 + stretch)), 1)  # random width, but at least 1
+        img = distort(img)
+        # img = cv2.resize(img, (wStretched, img.shape[0]))  # stretch horizontally by factor 0.5 .. 1.5
 
     # if enhance: # only if the line text has low contrast and line width is thin
     #     # increase contrast
@@ -57,7 +59,8 @@ def preprocessor(img, imgSize, enhance=False, dataAugmentation=False):
     return img
 
 
-
+# if __name__ == '__main__':
+#     main()
 def wer(r, h):
     """
     Calculation of WER with Levenshtein distance.

@@ -157,9 +157,9 @@ class Model:
             lrelu = tf.nn.leaky_relu(
                 batch_norm, alpha = 0.01
             )
-            # pool = tf.nn.max_pool(
-            #     lrelu, (1,1,2,1), (1,1,2,1), padding = "VALID"
-            # )
+            pool = tf.nn.max_pool(
+                lrelu, (1,1,2,1), (1,1,2,1), padding = "VALID"
+            )
             pool = batch_norm
             print('LAYER5 : ', pool.shape)
 
@@ -194,13 +194,13 @@ class Model:
                 tf.truncated_normal([2,2,512,512], stddev = 0.1)
             )
             conv = tf.nn.conv2d(
-                pool, kernel, padding = "SAME", strides = [1,1,1,1]
+                pool, kernel, padding = "VALID", strides = [1,1,1,1]
             )
             pool = tf.nn.max_pool(
                 conv, (1,1,2,1), (1,1,2,1), padding = "VALID"
             )
 
-            output = pool
+            output = conv
             print('LAYER 7 : ', pool.shape)
 
         # RETURN THE MAX POOLED LAYER  
