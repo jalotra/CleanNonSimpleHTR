@@ -18,7 +18,7 @@ class FilePaths:
     """ Filenames and paths to data """
     fnCharList = '../model/charList.txt'
     fnWordCharList = '../model/wordCharList.txt'
-    fnCorpus = '../data/corpus.txt'
+    fnCorpus = '../model/corpus.txt'
     fnAccuracy = '../model/accuracy.txt'
     fnTrain = '../data/'
     fnInfer = '../data/testImage1.png'  ## path to recognize the single image
@@ -72,6 +72,13 @@ class DataLoader:
 			# put sample into list
 			self.samples.append(Sample(gtText, fileName))
 
+		# FOR THE CVL DATABASE
+		f = open(filePath + "cvl_words.txt")
+		for line in f:
+			fileName = filePath + "cvl_words/" + str(line.split(".")[0])
+			gtText = str(line.split(" ")[1])
+			self.samples.append(Sample(gtText, fileName))
+
 		# some images in the IAM dataset are known to be damaged, don't show warning for them
 		if set(bad_samples) != set(bad_samples_reference):
 			print("Warning, damaged images found:", bad_samples)
@@ -79,14 +86,14 @@ class DataLoader:
 
 		# split into training and validation set: 95% - 5%
 		splitIdx = int(0.90 * len(self.samples))
-		test_set_examples = int(0.05*len(self.samples))
+		test_set_examples = int(0.10*len(self.samples))
 		self.trainSamples = self.samples[:splitIdx]
 		self.validationSamples = self.samples[splitIdx:splitIdx+test_set_examples]
-		self.testSamples = self.samples[splitIdx+test_set_examples : ]
+		# self.testSamples = self.samples[splitIdx+test_set_examples : ]
 		# put words into lists
 		self.trainWords = [x.gtText for x in self.trainSamples]
 		self.validationWords = [x.gtText for x in self.validationSamples]
-		self.testWords = [x.gtText for x in self.testSamples]
+		# self.testWords = [x.gtText for x in self.testSamples]
 
 		# number of randomly chosen samples per epoch for training 
 		self.numTrainSamplesPerEpoch = 25000 
@@ -127,10 +134,10 @@ class DataLoader:
 		self.currIdx = 0
 		self.samples = self.validationSamples
 
-	def testSet(self):
-		self.dataAugmentation = False
-		self.currIdx = 0
-		self.samples = self.testSamples
+	# def testSet(self):
+	# 	self.dataAugmentation = False
+	# 	self.currIdx = 0
+	# 	self.samples = self.testSamples
 
 
 	def getIteratorInfo(self):
