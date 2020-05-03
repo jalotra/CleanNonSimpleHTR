@@ -79,6 +79,8 @@ class DataLoader:
 			fileName = filePath + "cvl_words/" + str(line.split(" ")[0])
 			# print(fileName)
 			gtText = self.truncateLabel(str(line.split(" ")[1][:-1]), maxTextLen)
+			# remove unwanted chars
+			gtText = change_cvl_database_chars(gtText)
 			chars = chars.union(set(list(gtText)))
 			if(len(gtText) == 0):
 				continue
