@@ -165,10 +165,21 @@ def erode(img, erosion_prob = 0.5 , erosion_srate = 0.8, erosion_rrate = 1.2):
     
     return img
 
-def distort(img_Object):
+def threshold(img, threshold_prob = 0.5):
+    
+    threshold = np.random.binomial(1, threshold_prob)
+    
+    if threshold:
+        img = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
+            cv2.THRESH_BINARY,11,2)
+    return img
+
+def distort(img_np):
+    print('Data Augmentation is True while Training')
     # new_list=[]
     # for ind, img_np in enumerate(img_list):
         #img_np = 255 - img_np
+    img_np = threshold(img_np)
     img_np = translate(img_np)
     img_np = rotate(img_np)
     img_np = shear(img_np)
