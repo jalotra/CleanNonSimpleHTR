@@ -75,7 +75,9 @@ class DataLoader:
 		# FOR THE CVL DATABASE
 		f = open(filePath + "cvl_words.txt")
 		for line in f:
-			fileName = filePath + "cvl_words/" + str(line.split(".")[0])
+			# print(line)
+			fileName = filePath + "cvl_words/" + str(line.split(" ")[0])
+			print(fileName)
 			gtText = str(line.split(" ")[1])
 			self.samples.append(Sample(gtText, fileName))
 
