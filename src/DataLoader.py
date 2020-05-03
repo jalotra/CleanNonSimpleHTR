@@ -77,8 +77,9 @@ class DataLoader:
 		for line in f:
 			# print(line)
 			fileName = filePath + "cvl_words/" + str(line.split(" ")[0])
-			print(fileName)
-			gtText = str(line.split(" ")[1])
+			# print(fileName)
+			gtText = self.truncateLabel(str(line.split(" ")[1][:-1]), maxTextLen)
+			print(gtText)
 			self.samples.append(Sample(gtText, fileName))
 
 		# some images in the IAM dataset are known to be damaged, don't show warning for them
