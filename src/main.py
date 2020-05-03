@@ -20,7 +20,7 @@ def train(model, loader):
 	epoch = 0 # number of training epochs since start
 	bestCharErrorRate = float('inf') # best valdiation character error rate
 	noImprovementSince = 0 # number of epochs no improvement of character error rate occured
-	earlyStopping = 3 # stop training after this number of epochs without improvement
+	earlyStopping = 10 # stop training after this number of epochs without improvement
 	batchNum = 0
 	while True:
 		epoch += 1
@@ -54,7 +54,7 @@ def train(model, loader):
 		# stop training if no more improvement in the last x epochs
 		if noImprovementSince >= earlyStopping:
 			print('No more improvement since %d epochs. Training stopped.' % earlyStopping)
-			charErrorRate = validate_on_test_samples(model, loader)
+			# charErrorRate = validate_on_test_samples(model, loader)
 			break
 
 
