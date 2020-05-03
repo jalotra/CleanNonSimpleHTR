@@ -89,12 +89,15 @@ class DataLoader:
 		if set(bad_samples) != set(bad_samples_reference):
 			print("Warning, damaged images found:", bad_samples)
 			print("Damaged images expected:", bad_samples_reference)
+		
+		# Shuffle the samples 
+		random.shuffle(self.sampples)
 
-		# split into training and validation set: 95% - 5%
+		# split into training and validation set: 90% - 10%
 		splitIdx = int(0.90 * len(self.samples))
 		test_set_examples = int(0.10*len(self.samples))
 		self.trainSamples = self.samples[:splitIdx]
-		self.validationSamples = self.samples[splitIdx:splitIdx+test_set_examples]
+		self.validationSamples = self.samples[splitIdx:]
 		# self.testSamples = self.samples[splitIdx+test_set_examples : ]
 		# put words into lists
 		self.trainWords = [x.gtText for x in self.trainSamples]
