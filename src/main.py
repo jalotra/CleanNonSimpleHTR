@@ -13,7 +13,7 @@ from SamplePreprocessor import wer
 from Model import DecoderType, Model
 # from SpellChecker import correct_sentence
 
-CUDA_VISIBLE_DEVICES = 0
+# CUDA_VISIBLE_DEVICES = 0
 
 def train(model, loader):
 	"train NN"

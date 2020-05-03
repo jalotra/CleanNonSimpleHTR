@@ -113,6 +113,21 @@ class DataLoader:
 		# list of all chars in dataset
 		self.charList = sorted(list(chars))
 
+def change_cvl_database_chars(str):
+	m = {
+		"ä" : "a",
+		"ü" : "u",
+		"ö" : "o"
+	}
+	final = ""
+	for i , ch in enumerate(str):
+		if ch in m:
+			final += m[ch]
+		else:
+			final += ch
+
+	return final
+
 
 	def truncateLabel(self, text, maxTextLen):
 		# ctc_loss can't compute loss if it cannot find a mapping between text label and input 
@@ -166,3 +181,8 @@ class DataLoader:
 		imgs = [preprocess(cv2.imread(self.samples[i].filePath, cv2.IMREAD_GRAYSCALE), self.imgSize, self.dataAugmentation) for i in batchRange]
 		self.currIdx += self.batchSize
 		return Batch(gtTexts, imgs)
+
+if __name__ == "__main__":
+	l = ["shivam", "shiväm", "shivaö", "ühivam"] 
+	for ll in l:
+		print(change_cvl_database_chars(ll))
