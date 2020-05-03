@@ -80,6 +80,8 @@ class DataLoader:
 			# print(fileName)
 			gtText = self.truncateLabel(str(line.split(" ")[1][:-1]), maxTextLen)
 			chars = chars.union(set(list(gtText)))
+			if(len(gtText) == 0):
+				continue
 			print(gtText)
 			self.samples.append(Sample(gtText, fileName))
 
