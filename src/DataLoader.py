@@ -79,6 +79,7 @@ class DataLoader:
 			fileName = filePath + "cvl_words/" + str(line.split(" ")[0])
 			# print(fileName)
 			gtText = self.truncateLabel(str(line.split(" ")[1][:-1]), maxTextLen)
+			chars = chars.union(set(list(gtText)))
 			print(gtText)
 			self.samples.append(Sample(gtText, fileName))
 
