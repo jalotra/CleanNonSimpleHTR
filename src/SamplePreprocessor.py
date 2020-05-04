@@ -6,6 +6,7 @@ import random
 import numpy as np
 import cv2
 from DataAugmentation import distort
+import google_augment_and_mix 
 
 
 def preprocessor(img, imgSize, dataAugmentation=False):
@@ -20,7 +21,7 @@ def preprocessor(img, imgSize, dataAugmentation=False):
     if dataAugmentation:
         # stretch = (random.random() - 0.5)  # -0.5 .. +0.5
         # wStretched = max(int(img.shape[1] * (1 + stretch)), 1)  # random width, but at least 1
-        img = distort(img)
+        img = google_augment_and_mix.augment_and_mix(img)
         # img = cv2.resize(img, (wStretched, img.shape[0]))  # stretch horizontally by factor 0.5 .. 1.5
 
     # if enhance: # only if the line text has low contrast and line width is thin
@@ -50,13 +51,13 @@ def preprocessor(img, imgSize, dataAugmentation=False):
     # transpose for TF
     img = cv2.transpose(target)
 
-    # normalize
-    (m, s) = cv2.meanStdDev(img)
-    m = m[0][0]
-    s = s[0][0]
-    img = img - m
-    img = img / s if s>0 else img
-    return img
+    # # normalize
+    # (m, s) = cv2.meanStdDev(img)
+    # m = m[0][0]
+    # s = s[0][0]
+    # img = img - m
+    # img = img / s if s>0 else img
+    # return img
 
 
 # if __name__ == '__main__':
