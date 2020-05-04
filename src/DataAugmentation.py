@@ -185,7 +185,7 @@ def distort(img_np):
     img_np = translate(img_np)
     img_np = rotate(img_np)
     img_np = shear(img_np)
-    img_np = scale(img_np)
+    # img_np = scale(img_np)
     img_np = dilate(img_np)
     img_np = erode(img_np)
         # new_list.append(img_np)
