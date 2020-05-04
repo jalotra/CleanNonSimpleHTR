@@ -41,6 +41,7 @@ def augment_and_mix(image, severity=3, width=3, depth=-1, alpha=1.):
     Returns:
         mixed: Augmented and mixed image.
     """
+    image = normalize(image)
     ws = np.float32(
         np.random.dirichlet([alpha] * width))
     m = np.float32(np.random.beta(alpha, alpha))
@@ -60,9 +61,9 @@ def augment_and_mix(image, severity=3, width=3, depth=-1, alpha=1.):
     # print(mixed.size)
     # type(mixed)
     # print(mixed)
-    return mixed
+    return mixed, m, ws
 
 if __name__ == "__main__":
-    img = cv2.imread("../toValidate/22.png", cv2.IMREAD_GRAYSCALE).astype(np.float64)
+    img = cv2.imread("../toValidate/2.png", cv2.IMREAD_GRAYSCALE).astype(np.float64)
     img = augment_and_mix(img)
     print(img)
