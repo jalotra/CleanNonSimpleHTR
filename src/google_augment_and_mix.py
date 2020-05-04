@@ -49,10 +49,10 @@ def augment_and_mix(image, severity=3, width=3, depth=-1, alpha=1.):
         image_aug = image.copy()
         depth = depth if depth > 0 else np.random.randint(1, 4)
         for _ in range(depth):
-        op = np.random.choice(augmentations.augmentations)
-        image_aug = apply_op(image_aug, op, severity)
-        # Preprocessing commutes since all coefficients are convex
-        mix += ws[i] * normalize(image_aug)
+            op = np.random.choice(augmentations.augmentations)
+            image_aug = apply_op(image_aug, op, severity)
+            # Preprocessing commutes since all coefficients are convex
+            mix += ws[i] * normalize(image_aug)
 
     mixed = (1 - m) * normalize(image) + m * mix
     return mixed
