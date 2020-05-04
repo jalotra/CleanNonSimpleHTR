@@ -25,6 +25,7 @@ def apply_op(image, op, severity):
     image = np.clip(image * 255., 0, 255).astype(np.uint8)
     pil_img = Image.fromarray(image)  # Convert to PIL.Image
     pil_img = op(pil_img, severity)
+    # print(pil_img.size)
     return np.asarray(pil_img) / 255.
 
 
@@ -45,6 +46,7 @@ def augment_and_mix(image, severity=3, width=3, depth=-1, alpha=1.):
     m = np.float32(np.random.beta(alpha, alpha))
 
     mix = np.zeros_like(image)
+    # print(mix.size, "WS", ws.size)
     for i in range(width):
         image_aug = image.copy()
         depth = depth if depth > 0 else np.random.randint(1, 4)
@@ -55,4 +57,12 @@ def augment_and_mix(image, severity=3, width=3, depth=-1, alpha=1.):
             mix += ws[i] * normalize(image_aug)
 
     mixed = (1 - m) * normalize(image) + m * mix
+    # print(mixed.size)
+    # type(mixed)
+    # print(mixed)
     return mixed
+
+if __name__ == "__main__":
+    img = cv2.imread("../toValidate/22.png", cv2.IMREAD_GRAYSCALE).astype(np.float64)
+    img = augment_and_mix(img)
+    print(img)

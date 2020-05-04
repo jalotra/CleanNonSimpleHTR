@@ -18,7 +18,7 @@ import numpy as np
 from PIL import Image, ImageOps, ImageEnhance
 
 # ImageNet code should change this value
-IMAGE_SIZE = (128, 32)
+# IMAGE_SIZE = (128, 32)
 
 
 def int_parameter(level, maxval):
@@ -78,7 +78,7 @@ def shear_x(pil_img, level):
     level = float_parameter(sample_level(level), 0.3)
     if np.random.uniform() > 0.5:
         level = -level
-    return pil_img.transform((IMAGE_SIZE[0], IMAGE_SIZE[1]),
+    return pil_img.transform((pil_img.size[0], pil_img.size[1]),
                             Image.AFFINE, (1, level, 0, 0, 1, 0),
                             resample=Image.BILINEAR)
 
@@ -87,25 +87,25 @@ def shear_y(pil_img, level):
     level = float_parameter(sample_level(level), 0.3)
     if np.random.uniform() > 0.5:
         level = -level
-    return pil_img.transform((IMAGE_SIZE[0], IMAGE_SIZE[1]),
+    return pil_img.transform((pil_img.size[0], pil_img.size[1]),
                         Image.AFFINE, (1, 0, 0, level, 1, 0),
                         resample=Image.BILINEAR)
 
 
 def translate_x(pil_img, level):
-    level = int_parameter(sample_level(level), IMAGE_SIZE[1] / 3)
+    level = int_parameter(sample_level(level), pil_img.size[1] / 3)
     if np.random.random() > 0.5:
         level = -level
-    return pil_img.transform((IMAGE_SIZE[0], IMAGE_SIZE[1]),
+    return pil_img.transform((pil_img.size[0], pil_img.size[1]),
                         Image.AFFINE, (1, 0, level, 0, 1, 0),
                         resample=Image.BILINEAR)
 
 
 def translate_y(pil_img, level):
-    level = int_parameter(sample_level(level), IMAGE_SIZE[1] / 3)
+    level = int_parameter(sample_level(level), pil_img.size[1] / 3)
     if np.random.random() > 0.5:
         level = -level
-    return pil_img.transform((IMAGE_SIZE[0], IMAGE_SIZE[1]),
+    return pil_img.transform((pil_img.size[0], pil_img.size[1]),
                         Image.AFFINE, (1, 0, 0, 0, 1, level),
                         resample=Image.BILINEAR)
 

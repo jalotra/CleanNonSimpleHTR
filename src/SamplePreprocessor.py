@@ -13,12 +13,13 @@ def preprocessor(img, imgSize, dataAugmentation=False):
     "put img into target img of size imgSize, transpose for TF and normalize gray-values"
 
     # there are damaged files in IAM dataset - just use black image instead
+    wanna_Augment = True
     if img is None:
         img = np.zeros([imgSize[1], imgSize[0]]) # (64,800)
         print("Image None!")
-
+        wanna_Augment = False
     # increase dataset size by applying random stretches to the images
-    if dataAugmentation:
+    if dataAugmentation and wanna_Augment:
         # stretch = (random.random() - 0.5)  # -0.5 .. +0.5
         # wStretched = max(int(img.shape[1] * (1 + stretch)), 1)  # random width, but at least 1
         img = google_augment_and_mix.augment_and_mix(img.astype(np.float32))
