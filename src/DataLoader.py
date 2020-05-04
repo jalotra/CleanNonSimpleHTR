@@ -76,7 +76,7 @@ class DataLoader:
 		f = open("../data/" + "cvl_words.txt")
 		for line in f:
 			# print(line)
-			fileName = "../data/" + "cvl_words/" + str(line.strip().split(" "))
+			fileName = "../data/" + "cvl_words/" + str(line.strip().split(" ")[0])
 			# print(fileName)
 			# print(fileName)
 			gtText = self.truncateLabel(str(line.split(".")[0].split("-")[-1]), maxTextLen)
