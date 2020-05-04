@@ -131,58 +131,58 @@ def change_cvl_database_chars(str):
 	return final
 
 
-	def truncateLabel(self, text, maxTextLen):
-		# ctc_loss can't compute loss if it cannot find a mapping between text label and input 
-		# labels. Repeat letters cost double because of the blank symbol needing to be inserted.
-		# If a too-long label is provided, ctc_loss returns an infinite gradient
-		cost = 0
-		for i in range(len(text)):
-			if i != 0 and text[i] == text[i-1]:
-				cost += 2
-			else:
-				cost += 1
-			if cost > maxTextLen:
-				return text[:i]
-		return text
+def truncateLabel(self, text, maxTextLen):
+	# ctc_loss can't compute loss if it cannot find a mapping between text label and input 
+	# labels. Repeat letters cost double because of the blank symbol needing to be inserted.
+	# If a too-long label is provided, ctc_loss returns an infinite gradient
+	cost = 0
+	for i in range(len(text)):
+		if i != 0 and text[i] == text[i-1]:
+			cost += 2
+		else:
+			cost += 1
+		if cost > maxTextLen:
+			return text[:i]
+	return text
 
 
-	def trainSet(self):
-		"switch to randomly chosen subset of training set"
-		self.dataAugmentation = True
-		self.currIdx = 0
-		random.shuffle(self.trainSamples)
-		self.samples = self.trainSamples[:self.numTrainSamplesPerEpoch]
+def trainSet(self):
+	"switch to randomly chosen subset of training set"
+	self.dataAugmentation = True
+	self.currIdx = 0
+	random.shuffle(self.trainSamples)
+	self.samples = self.trainSamples[:self.numTrainSamplesPerEpoch]
 
+
+def validationSet(self):
+	"switch to validation set"
+	self.dataAugmentation = False
+	self.currIdx = 0
+	self.samples = self.validationSamples
+
+# def testSet(self):
+# 	self.dataAugmentation = False
+# 	self.currIdx = 0
+# 	self.samples = self.testSamples
+
+
+def getIteratorInfo(self):
+	"current batch index and overall number of batches"
+	return (self.currIdx // self.batchSize + 1, len(self.samples) // self.batchSize)
+
+
+def hasNext(self):
+	"iterator"
+	return self.currIdx + self.batchSize <= len(self.samples)
 	
-	def validationSet(self):
-		"switch to validation set"
-		self.dataAugmentation = False
-		self.currIdx = 0
-		self.samples = self.validationSamples
-
-	# def testSet(self):
-	# 	self.dataAugmentation = False
-	# 	self.currIdx = 0
-	# 	self.samples = self.testSamples
-
-
-	def getIteratorInfo(self):
-		"current batch index and overall number of batches"
-		return (self.currIdx // self.batchSize + 1, len(self.samples) // self.batchSize)
-
-
-	def hasNext(self):
-		"iterator"
-		return self.currIdx + self.batchSize <= len(self.samples)
-		
-		
-	def getNext(self):
-		"iterator"
-		batchRange = range(self.currIdx, self.currIdx + self.batchSize)
-		gtTexts = [self.samples[i].gtText for i in batchRange]
-		imgs = [preprocess(cv2.imread(self.samples[i].filePath, cv2.IMREAD_GRAYSCALE), self.imgSize, self.dataAugmentation) for i in batchRange]
-		self.currIdx += self.batchSize
-		return Batch(gtTexts, imgs)
+	
+def getNext(self):
+	"iterator"
+	batchRange = range(self.currIdx, self.currIdx + self.batchSize)
+	gtTexts = [self.samples[i].gtText for i in batchRange]
+	imgs = [preprocess(cv2.imread(self.samples[i].filePath, cv2.IMREAD_GRAYSCALE), self.imgSize, self.dataAugmentation) for i in batchRange]
+	self.currIdx += self.batchSize
+	return Batch(gtTexts, imgs)
 
 if __name__ == "__main__":
 	l = ["shivam", "shiväm", "shivaö", "ühivam"] 
