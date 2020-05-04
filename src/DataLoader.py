@@ -80,7 +80,7 @@ class DataLoader:
 			# print(fileName)
 			gtText = self.truncateLabel(str(line.split(".")[0].split("-")[-1]), maxTextLen)
 			# remove unwanted chars
-			gtText = change_cvl_database_chars(gtText)
+			gtText = self.change_cvl_database_chars(gtText)
 			chars = chars.union(set(list(gtText)))
 			if(len(gtText) == 0):
 				continue
@@ -115,7 +115,7 @@ class DataLoader:
 		# list of all chars in dataset
 		self.charList = sorted(list(chars))
 
-	def change_cvl_database_chars(str):
+	def change_cvl_database_chars(self, str):
 		m = {
 			"ä" : "a",
 			"ü" : "u",
