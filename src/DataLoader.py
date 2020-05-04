@@ -73,7 +73,7 @@ class DataLoader:
 			self.samples.append(Sample(gtText, fileName))
 
 		# FOR THE CVL DATABASE
-		f = open(filePath + "cvl_words.txt")
+		f = open("../data/" + "cvl_words.txt")
 		for line in f:
 			# print(line)
 			fileName = filePath + "cvl_words/" + line
@@ -83,7 +83,7 @@ class DataLoader:
 			# remove unwanted chars
 			gtText = self.change_cvl_database_chars(gtText)
 			
-			print(os.path.isfile(fileName), gtText)
+			print(os.path.isfile(fileName), fileName,  gtText)
 			if(len(gtText) == 0):
 				continue
 			# print(gtText)
