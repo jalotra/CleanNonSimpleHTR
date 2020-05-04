@@ -61,9 +61,9 @@ def augment_and_mix(image, severity=3, width=3, depth=-1, alpha=1.):
     # print(mixed.size)
     # type(mixed)
     # print(mixed)
-    return mixed, m, ws
+    return mixed
 
 if __name__ == "__main__":
     img = cv2.imread("../toValidate/2.png", cv2.IMREAD_GRAYSCALE).astype(np.float64)
     img = augment_and_mix(img)
-    print(img)
+    print(img, type(img))
