@@ -26,9 +26,9 @@ def scale(img, scale_prob = 0.5, scale_stdv = 0.12):
         w_scale = random.uniform(0.75, 1.25)
         h_scale = random.uniform(0.75, 1.25)
 
-        image = cv2.resize(img, None, fx = w_scale, fy = h_scale, interpolation = cv2.INTER_CUBIC)
+        img = cv2.resize(img, None, fx = w_scale, fy = h_scale, interpolation = cv2.INTER_CUBIC)
 
-        return image
+    return img
 
 def shear(img, shear_prob = 0.5, shear_prec = 4):
     """
