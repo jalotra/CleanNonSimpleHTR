@@ -84,7 +84,7 @@ class DataLoader:
 			chars = chars.union(set(list(gtText)))
 			if(len(gtText) == 0):
 				continue
-			print(gtText)
+			# print(gtText)
 			self.samples.append(Sample(gtText, fileName))
 
 		# some images in the IAM dataset are known to be damaged, don't show warning for them

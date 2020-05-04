@@ -170,7 +170,7 @@ def threshold(img, threshold_prob = 0.5):
     threshold = np.random.binomial(1, threshold_prob)
     # img_blur = cv2.medi
     if threshold:
-        img = cv2.adaptiveThreshold(img.astype('unint8'),255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
+        img = cv2.adaptiveThreshold(img.astype('uint8'),255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
             cv2.THRESH_BINARY,11,2)
     return img
 
