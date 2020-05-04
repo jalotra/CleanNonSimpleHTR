@@ -93,7 +93,7 @@ class DataLoader:
 			print("Damaged images expected:", bad_samples_reference)
 		
 		# Shuffle the samples 
-		random.shuffle(self.sampples)
+		random.shuffle(self.samples)
 
 		# split into training and validation set: 90% - 10%
 		splitIdx = int(0.90 * len(self.samples))
