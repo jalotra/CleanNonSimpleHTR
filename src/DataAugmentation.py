@@ -5,6 +5,7 @@
 from PIL import Image
 import numpy as np
 import cv2
+import random
 
 def scale(img, scale_prob = 0.5, scale_stdv = 0.12):
     """
@@ -19,28 +20,15 @@ def scale(img, scale_prob = 0.5, scale_stdv = 0.12):
             
     Returns:
         img: the scaled (or not) image.
-    
     """
-    scale = np.random.binomial(1, scale_prob)
     
-    if scale:
-        
-        imgPIL = Image.fromarray(img)
-        ho, vo = imgPIL.size
-        scale_factor = np.random.lognormal(sigma=scale_stdv)
-        if scale_factor <= 0:
-            return img
-        hn, vn = int(scale_factor*ho), int(scale_factor*vo)
-        img_sc = imgPIL.resize((hn, vn))
-        
-        img = np.array(img_sc).reshape((vn,hn))
-                
-        if hn > ho:
-            img = img[int(vn/2)-int(vo/2):int(vn/2)+int(np.ceil(vo/2)) ,int(hn/2)-int(ho/2):int(hn/2)+int(np.ceil(ho/2))] 
-        else:
-            img = np.pad(img, ((int((vo-vn)/2), int(np.ceil((vo-vn)/2))),((int((ho-hn)/2), int(np.ceil((ho-hn)/2))))), mode='constant')
-            
-    return img
+    if random.random() >= scale_prob:
+        w_scale = random.uniform(0.75, 1.25)
+        h_scale = random.uniform(0.75, 1.25)
+
+        image = cv2.resize(img, None, fx = w_scale, fy = h_scale, interpolation = cv2.INTER_CUBIC)
+
+        return image
 
 def shear(img, shear_prob = 0.5, shear_prec = 4):
     """
@@ -177,7 +165,7 @@ def threshold(img, threshold_prob = 0.5):
     return img
 
 def distort(img_np):
-    print('Data Augmentation is True while Training')
+    # print('Data Augmentation is True while Training')
     # new_list=[]
     # for ind, img_np in enumerate(img_list):
         #img_np = 255 - img_np
