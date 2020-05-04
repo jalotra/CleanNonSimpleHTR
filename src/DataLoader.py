@@ -83,7 +83,7 @@ class DataLoader:
 			# remove unwanted chars
 			gtText = self.change_cvl_database_chars(gtText)
 			
-			print(os.path.isfile(fileName), fileName,  gtText)
+			print(os.path.exists(fileName), fileName,  gtText)
 			if(len(gtText) == 0):
 				continue
 			# print(gtText)
