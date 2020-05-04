@@ -28,6 +28,8 @@ def scale(img, scale_prob = 0.5, scale_stdv = 0.12):
         imgPIL = Image.fromarray(img)
         ho, vo = imgPIL.size
         scale_factor = np.random.lognormal(sigma=scale_stdv)
+        if scale_factor <= 0:
+            return img
         hn, vn = int(scale_factor*ho), int(scale_factor*vo)
         img_sc = imgPIL.resize((hn, vn))
         
