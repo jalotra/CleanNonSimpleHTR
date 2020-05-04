@@ -59,11 +59,11 @@ class DataLoader:
 			# filename: part1-part2-part3 --> part1/part1-part2/part1-part2-part3.png
 			fileNameSplit = lineSplit[0].split('-')
 			fileName = filePath + 'words/' + fileNameSplit[0] + '/' + fileNameSplit[0] + '-' + fileNameSplit[1] + '/' + lineSplit[0] + '.png'
-
+			
 			# GT text are columns starting at 9
 			gtText = self.truncateLabel(' '.join(lineSplit[8:]), maxTextLen)
 			chars = chars.union(set(list(gtText)))
-
+			print(os.path.exists(fileName), fileName,  gtText)
 			# check if image is not empty
 			if not os.path.getsize(fileName):
 				bad_samples.append(lineSplit[0] + '.png')
