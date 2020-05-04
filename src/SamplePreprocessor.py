@@ -21,7 +21,7 @@ def preprocessor(img, imgSize, dataAugmentation=False):
     if dataAugmentation:
         # stretch = (random.random() - 0.5)  # -0.5 .. +0.5
         # wStretched = max(int(img.shape[1] * (1 + stretch)), 1)  # random width, but at least 1
-        img = google_augment_and_mix.augment_and_mix(img)
+        img = google_augment_and_mix.augment_and_mix(img.astype(np.float32))
         # img = cv2.resize(img, (wStretched, img.shape[0]))  # stretch horizontally by factor 0.5 .. 1.5
 
     # if enhance: # only if the line text has low contrast and line width is thin
