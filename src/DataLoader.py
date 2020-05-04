@@ -73,20 +73,20 @@ class DataLoader:
 			self.samples.append(Sample(gtText, fileName))
 
 		# FOR THE CVL DATABASE
-		f = open(filePath + "cvl_words.txt")
-		for line in f:
-			# print(line)
-			fileName = filePath + "cvl_words/" + line
-			# print(fileName)
-			# print(fileName)
-			gtText = self.truncateLabel(str(line.split(".")[0].split("-")[-1]), maxTextLen)
-			# remove unwanted chars
-			gtText = self.change_cvl_database_chars(gtText)
-			chars = chars.union(set(list(gtText)))
-			if(len(gtText) == 0):
-				continue
-			# print(gtText)
-			self.samples.append(Sample(gtText, fileName))
+		# f = open(filePath + "cvl_words.txt")
+		# for line in f:
+		# 	# print(line)
+		# 	fileName = filePath + "cvl_words/" + line
+		# 	# print(fileName)
+		# 	# print(fileName)
+		# 	gtText = self.truncateLabel(str(line.split(".")[0].split("-")[-1]), maxTextLen)
+		# 	# remove unwanted chars
+		# 	gtText = self.change_cvl_database_chars(gtText)
+		# 	chars = chars.union(set(list(gtText)))
+		# 	if(len(gtText) == 0):
+		# 		continue
+		# 	# print(gtText)
+		# 	self.samples.append(Sample(gtText, fileName))
 
 		# some images in the IAM dataset are known to be damaged, don't show warning for them
 		if set(bad_samples) != set(bad_samples_reference):
