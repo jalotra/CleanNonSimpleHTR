@@ -58,7 +58,7 @@ def preprocessor(img, imgSize, dataAugmentation=False):
     # s = s[0][0]
     # img = img - m
     # img = img / s if s>0 else img
-    # return img
+    return img
 
 
 # if __name__ == '__main__':
