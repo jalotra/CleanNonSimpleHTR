@@ -164,7 +164,7 @@ def threshold(img, threshold_prob = 0.5):
         cv2.THRESH_BINARY,11,2)
     return img
 
-def do_nothing(img):
+def do_nothing(img, _):
     return img
     
 augmentations = [do_nothing, translate, dilate, erode, threshold, rotate, shear]
