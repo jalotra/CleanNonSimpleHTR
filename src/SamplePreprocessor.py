@@ -6,7 +6,7 @@ import random
 import numpy as np
 import cv2
 from DataAugmentation import distort
-import google_augment_and_mix 
+from google_augment_and_mix import normalize, augment_and_mix, show_image
 
 
 def preprocessor(img, imgSize, dataAugmentation=False):
@@ -19,24 +19,12 @@ def preprocessor(img, imgSize, dataAugmentation=False):
         print("Image None!")
         wanna_Augment = False
     # increase dataset size by applying random stretches to the images
-    if dataAugmentation and wanna_Augment:
+    if dataAugmentation:
         # stretch = (random.random() - 0.5)  # -0.5 .. +0.5
         # wStretched = max(int(img.shape[1] * (1 + stretch)), 1)  # random width, but at least 1
-        img = google_augment_and_mix.augment_and_mix(img.astype(np.float32))
+        img = normalize(augment_and_mix(img.astype(np.float32)))
         # img = cv2.resize(img, (wStretched, img.shape[0]))  # stretch horizontally by factor 0.5 .. 1.5
-
-    # if enhance: # only if the line text has low contrast and line width is thin
-    #     # increase contrast
-    #     pxmin = np.min(img)
-    #     pxmax = np.max(img)
-    #     try : 
-    #         imgContrast = (img - pxmin) / (pxmax - pxmin) * 255
-    #     except Exception:
-    #         imgContrast = img
-    #     # increase line width
-    #     kernel = np.ones((3, 3), np.uint8)
-    #     img = cv2.erode(imgContrast, kernel, iterations=1) # increase linewidth
-
+    # show_image(img)
     # create target image and copy sample image into it
     (wt, ht) = imgSize
     (h, w) = img.shape
@@ -46,23 +34,28 @@ def preprocessor(img, imgSize, dataAugmentation=False):
     newSize = (max(min(wt, int(w / f)), 1),
                max(min(ht, int(h / f)), 1))  # scale according to f (result at least 1 and at most wt or ht)
     img = cv2.resize(img, newSize)
-    target = np.ones([ht, wt]) * 255  # shape=(64,800)
+    target = np.ones([ht, wt]) * 1  # shape=(64,800)
     target[0:newSize[1], 0:newSize[0]] = img
 
     # transpose for TF
     img = cv2.transpose(target)
+    # img = target
 
     # # normalize
-    # (m, s) = cv2.meanStdDev(img)
-    # m = m[0][0]
-    # s = s[0][0]
-    # img = img - m
-    # img = img / s if s>0 else img
+    if not dataAugmentation and wanna_Augment:
+        img = normalize(img)
+    
+    show_image(img)
     return img
 
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    img = cv2.imread("../toValidate/Box9.jpg", cv2.IMREAD_GRAYSCALE).astype(np.float32)
+    # img = normalize(img)
+    img = preprocessor(img, (128, 32), True)
+    print(img, type(img))
+
+
 def wer(r, h):
     """
     Calculation of WER with Levenshtein distance.
