@@ -20,10 +20,11 @@ def normalize(img):
 
 def apply_op(image, op, severity):
     image = np.clip(image * 255., 0, 255).astype(np.uint8)
-    pil_img = Image.fromarray(image)  # Convert to PIL.Image
-    pil_img = op(pil_img, severity)
+    # pil_img = Image.fromarray(image)  # Convert to PIL.Image
+    pil_img = op(image, severity)
     # print(pil_img.size)
-    return np.asarray(pil_img)
+    # return np.asarray(pil_img)
+    return pil_img
 
 
 def show_image(img):
@@ -70,7 +71,7 @@ def augment_and_mix(image, severity=3, width=3, depth=-1, alpha=1.):
     return normalize(mixed)
 
 if __name__ == "__main__":
-    img = cv2.imread("../toValidate/Box9.jpg", cv2.IMREAD_GRAYSCALE).astype(np.float32)
+    img = cv2.imread("../toValidate/Box21.jpg", cv2.IMREAD_GRAYSCALE).astype(np.float32)
     img = normalize(img)
     img = augment_and_mix(img)
     print(img, type(img))
