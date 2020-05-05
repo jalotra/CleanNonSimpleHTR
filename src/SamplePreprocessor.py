@@ -22,7 +22,7 @@ def preprocessor(img, imgSize, dataAugmentation=False):
         # wStretched = max(int(img.shape[1] * (1 + stretch)), 1)  # random width, but at least 1
         img = distort(img)
         # img = cv2.resize(img, (wStretched, img.shape[0]))  # stretch horizontally by factor 0.5 .. 1.5
-
+    
     # if enhance: # only if the line text has low contrast and line width is thin
     #     # increase contrast
     #     pxmin = np.min(img)
@@ -49,18 +49,29 @@ def preprocessor(img, imgSize, dataAugmentation=False):
 
     # transpose for TF
     img = cv2.transpose(target)
-
     # normalize
     (m, s) = cv2.meanStdDev(img)
     m = m[0][0]
     s = s[0][0]
     img = img - m
     img = img / s if s>0 else img
+    # show_image(img)
     return img
 
+def show_image(img):
+    cv2.namedWindow("output", cv2.WINDOW_NORMAL)
+    img = cv2.resize(img, (500, 540))      
+    cv2.imshow("output", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    img = cv2.imread("../toValidate/Box9.jpg", cv2.IMREAD_GRAYSCALE)
+    # img = normalize(img)
+    # img = augment_and_mix(img)
+    img = preprocessor(img, (128, 32), False)
+    print(img, type(img))
+
 def wer(r, h):
     """
     Calculation of WER with Levenshtein distance.
