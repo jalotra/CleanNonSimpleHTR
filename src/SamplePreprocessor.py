@@ -45,7 +45,7 @@ def preprocessor(img, imgSize, dataAugmentation=False):
     if not dataAugmentation and wanna_Augment:
         img = normalize(img)
     
-    show_image(img)
+    # show_image(img)
     return img
 
 

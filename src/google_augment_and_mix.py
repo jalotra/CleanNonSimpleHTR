@@ -66,7 +66,7 @@ def augment_and_mix(image, severity=3, width=3, depth=-1, alpha=1.):
     # show_image(mix)
 
     mixed = (1 - m) * normalize(image) + m * mix
-    show_image(mixed.astype("uint8"))
+    # show_image(mixed.astype("uint8"))
     return normalize(mixed)
 
 if __name__ == "__main__":
