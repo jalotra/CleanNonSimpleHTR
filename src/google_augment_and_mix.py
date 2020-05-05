@@ -56,7 +56,7 @@ def augment_and_mix(image, severity=3, width=3, depth=-1, alpha=1.):
         depth = depth if depth > 0 else np.random.randint(1, 4)
         for _ in range(depth):
             op = np.random.choice(augmentations.augmentations)
-            print(op)
+            # print(op)
             # op = augmentations.rotate
             image_aug = apply_op(image_aug, op, severity)
     # Preprocessing commutes since all coefficients are convex
