@@ -6,6 +6,7 @@ import random
 import numpy as np
 import cv2
 from SamplePreprocessor import preprocessor as preprocess
+# from Model import Model
 
 
 class Sample:
@@ -44,63 +45,82 @@ class DataLoader:
 		self.imgSize = imgSize
 		self.samples = []
 	
-		f=open(filePath+'words.txt')
+		# f=open(filePath+'words.txt')
 		chars = set()
-		bad_samples = []
-		bad_samples_reference = ['a01-117-05-02.png', 'r06-022-03-05.png']
-		for line in f:
-			# ignore comment line
-			if not line or line[0]=='#':
-				continue
+		# bad_samples = []
+		# bad_samples_reference = ['a01-117-05-02.png', 'r06-022-03-05.png']
+		# for line in f:
+		# 	# ignore comment line
+		# 	if not line or line[0]=='#':
+		# 		continue
 			
-			lineSplit = line.strip().split(' ')
-			assert len(lineSplit) >= 9
+		# 	lineSplit = line.strip().split(' ')
+		# 	assert len(lineSplit) >= 9
 			
-			# filename: part1-part2-part3 --> part1/part1-part2/part1-part2-part3.png
-			fileNameSplit = lineSplit[0].split('-')
-			fileName = filePath + 'words/' + fileNameSplit[0] + '/' + fileNameSplit[0] + '-' + fileNameSplit[1] + '/' + lineSplit[0] + '.png'
+		# 	# filename: part1-part2-part3 --> part1/part1-part2/part1-part2-part3.png
+		# 	fileNameSplit = lineSplit[0].split('-')
+		# 	fileName = filePath + 'words/' + fileNameSplit[0] + '/' + fileNameSplit[0] + '-' + fileNameSplit[1] + '/' + lineSplit[0] + '.png'
 			
-			# GT text are columns starting at 9
-			gtText = self.truncateLabel(' '.join(lineSplit[8:]), maxTextLen)
-			chars = chars.union(set(list(gtText)))
-			print(os.path.exists(fileName), fileName,  gtText)
-			# check if image is not empty
-			if not os.path.getsize(fileName):
-				bad_samples.append(lineSplit[0] + '.png')
-				continue
+		# 	# GT text are columns starting at 9
+		# 	gtText = self.truncateLabel(' '.join(lineSplit[8:]), maxTextLen)
+		# 	chars = chars.union(set(list(gtText)))
+		# 	print(os.path.exists(fileName), fileName,  gtText)
+		# 	# check if image is not empty
+		# 	if not os.path.getsize(fileName):
+		# 		bad_samples.append(lineSplit[0] + '.png')
+		# 		continue
 
-			# put sample into list
-			self.samples.append(Sample(gtText, fileName))
+		# 	# put sample into list
+		# 	self.samples.append(Sample(gtText, fileName))
 
-		# FOR THE CVL DATABASE
-		f = open("../data/" + "cvl_words.txt")
+		# # FOR THE CVL DATABASE
+		# f = open("../data/" + "cvl_words.txt")
+		# for line in f:
+		# 	# print(line)
+		# 	fileName = "../data/" + "cvl_words/" + str(line.strip().split(" ")[0])
+		# 	# print(fileName)
+		# 	# print(fileName)
+		# 	gtText = self.truncateLabel(str(line.split(".")[0].split("-")[-1]), maxTextLen)
+		# 	# remove unwanted chars
+		# 	gtText = self.change_cvl_database_chars(gtText)
+			
+		# 	print(os.path.exists(fileName), fileName,  gtText)
+		# 	if(len(gtText) == 0):
+		# 		continue
+		# 	# print(gtText)
+		# 	chars = chars.union(set(list(gtText)))
+		# 	self.samples.append(Sample(gtText, fileName))
+
+		# # some images in the IAM dataset are known to be damaged, don't show warning for them
+		# if set(bad_samples) != set(bad_samples_reference):
+		# 	print("Warning, damaged images found:", bad_samples)
+		# 	print("Damaged images expected:", bad_samples_reference)
+
+		# Doctor finetuning 
+		f = open("../data/" + "crops.txt")
 		for line in f:
 			# print(line)
-			fileName = "../data/" + "cvl_words/" + str(line.strip().split(" ")[0])
+			fileName = "../data/" + "crops/" + str(line.strip().split(" ")[0])
 			# print(fileName)
 			# print(fileName)
-			gtText = self.truncateLabel(str(line.split(".")[0].split("-")[-1]), maxTextLen)
+			gtText = self.truncateLabel(str(line.strip().split(" ")[1]), maxTextLen)
 			# remove unwanted chars
 			gtText = self.change_cvl_database_chars(gtText)
-			
-			print(os.path.exists(fileName), fileName,  gtText)
-			if(len(gtText) == 0):
-				continue
-			# print(gtText)
-			chars = chars.union(set(list(gtText)))
 			self.samples.append(Sample(gtText, fileName))
 
-		# some images in the IAM dataset are known to be damaged, don't show warning for them
-		if set(bad_samples) != set(bad_samples_reference):
-			print("Warning, damaged images found:", bad_samples)
-			print("Damaged images expected:", bad_samples_reference)
-		
+		charlist = open("../model/charlist.txt", "r")
+		for line in charlist.readlines():
+			for i in range(len(line)):
+				chars.add(line[i])
+		print(chars)
+
+		print("SAMPLES_LEN : ", len(self.samples))
 		# Shuffle the samples 
 		random.shuffle(self.samples)
 
 		# split into training and validation set: 90% - 10%
 		splitIdx = int(0.90 * len(self.samples))
-		test_set_examples = int(0.10*len(self.samples))
+		print(splitIdx)
 		self.trainSamples = self.samples[:splitIdx]
 		self.validationSamples = self.samples[splitIdx:]
 		# self.testSamples = self.samples[splitIdx+test_set_examples : ]
@@ -110,7 +130,7 @@ class DataLoader:
 		# self.testWords = [x.gtText for x in self.testSamples]
 
 		# number of randomly chosen samples per epoch for training 
-		self.numTrainSamplesPerEpoch = 25000 
+		self.numTrainSamplesPerEpoch = int(len(self.samples)*0.40)
 		
 		# start with train set
 		self.trainSet()
@@ -188,6 +208,5 @@ class DataLoader:
 		return Batch(gtTexts, imgs)
 
 if __name__ == "__main__":
-	l = ["shivam", "shiväm", "shivaö", "ühivam"] 
-	for ll in l:
-		print(change_cvl_database_chars(ll))
+	loader = DataLoader(FilePaths.fnTrain, 64, (128, 32), 32)
+	print(len(loader.samples))
