@@ -12,5 +12,8 @@ The architecture takes in a handwritten word and spits out machine-readable stri
 3. Finally the CTC-Loss is used to find the loss at the output and then we backprop the gradient of loss.
 
 ### Results
-The model was trained on a total of approx(200,000) words from Iam + Cvl Dataset alongwith Data-Augmentation with probablity(p==0.5). And a accuracy of char-accuracy of 9.34% was achieved on the dataset. The data was divided into 90%-10% train-test dataset. And edit-distance between predicted string (s2) and ground-truth (s1) to define the character error-rate. 
+1. The model was trained on a total of approx(200,000) words from Iam + Cvl Dataset alongwith Data-Augmentation with probablity(p==0.5) with a batchsize of 64 words and for approx 96 epochs with 25000 samples in each epoch.
+2. The data was divided into 90%-10% train-test dataset. And edit-distance between predicted string (s2) and ground-truth (s1) to define the character error-rate. 
+3. And an max chararcter-error-rate of 9.34% was achieved by the model on this configuration. 
+
 
